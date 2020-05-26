@@ -104,12 +104,16 @@ class _MainScreenState extends State<MainScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'IniniCat',
-          style: TextStyle(
-            fontSize: 40,
-            fontWeight: FontWeight.w500,
-          ),
+        title: Row(
+          children: <Widget>[
+            Text(
+              'InfiniCat',
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
         ),
         centerTitle: false,
       ),

@@ -1,6 +1,6 @@
 name: infinicat
 description: App for images of cats
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -9,10 +9,10 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^0.1.2
+  cupertino_icons: ^0.1.3
   dio: ^3.0.9
   toast: ^0.1.5
-  downloads_path_provider: ^0.1.0
+  downloads_path_provider_28: ^0.1.0
   permission_handler: ^5.0.0+hotfix.4
 
 dev_dependencies:
