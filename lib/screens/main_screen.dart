@@ -105,6 +105,7 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
               'InfiniCat',
@@ -113,6 +114,12 @@ class _MainScreenState extends State<MainScreen> {
                 fontWeight: FontWeight.w500,
               ),
             ),
+            IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {
+                Navigator.pushNamed(context, '/settings');
+              },
+            )
           ],
         ),
         centerTitle: false,

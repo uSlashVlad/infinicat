@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:infinicat/screens/main_screen.dart';
+import 'package:infinicat/screens/settings_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => MainScreen(),
+        '/settings': (context) => SettingsScreen(),
       },
     );
   }

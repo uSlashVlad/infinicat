@@ -1,8 +1,8 @@
 import 'package:infinicat/services/networking.dart';
 import 'package:dio/dio.dart';
+import 'package:infinicat/constants.dart';
 
 const apiKey = '52f46af4-842c-42be-8bee-470eb80a7996';
-const apiUrl = 'https://api.thecatapi.com/v1/';
 
 enum VoteType { down, up }
 
@@ -10,7 +10,7 @@ class CatAPI {
   var data;
 
   Future<void> loadData() async {
-    String url = '${apiUrl}images/search/';
+    String url = '${kApiUrl}images/search/';
     data = (await NetworkHelper.getData(url)).data[0];
   }
 
@@ -34,7 +34,7 @@ class CatAPI {
   }
 
   Future<Response> _vote(int type) async {
-    String url = '${apiUrl}votes/';
+    String url = '${kApiUrl}votes/';
     Response result = await NetworkHelper.sendData(
       url,
       headers: {"x-api-key": apiKey},

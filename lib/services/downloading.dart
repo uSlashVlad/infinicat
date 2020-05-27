@@ -1,6 +1,6 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:dio/dio.dart';
-import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
+import 'package:image_save/image_save.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 enum DownloadStatus {
@@ -10,27 +10,32 @@ enum DownloadStatus {
 }
 
 class DownloadHelper {
+  final dio = Dio();
+
   Future<DownloadStatus> download(String url) async {
-    Directory downloadDirectory =
-        await DownloadsPathProvider.downloadsDirectory;
-    Dio dio = Dio();
-    String filename = url.split('/').last;
-
-    print(downloadDirectory);
-
-    if (await _checkPermission()) {
-      var downloading = await dio.download(
-        url,
-        '${downloadDirectory.path}/$filename',
-      );
-      if (downloading.statusCode == 200) {
-        return DownloadStatus.completed;
+    try {
+      if (await _checkPermission()) {
+        final res = await ImageSave.saveImage(
+          await _getData(url),
+          url.split('.').last,
+          albumName: 'InfiniCat',
+        );
+        return (res) ? DownloadStatus.completed : DownloadStatus.error;
       } else {
-        return DownloadStatus.error;
+        return DownloadStatus.noPerm;
       }
-    } else {
-      return DownloadStatus.noPerm;
+    } catch (e) {
+      print(e);
+      return DownloadStatus.error;
     }
+  }
+
+  Future<Uint8List> _getData(String url) async {
+    Response<List<int>> res = await Dio().get<List<int>>(
+      url,
+      options: Options(responseType: ResponseType.bytes),
+    );
+    return Uint8List.fromList(res.data);
   }
 
   Future<bool> _checkPermission() async {
