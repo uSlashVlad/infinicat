@@ -54,6 +54,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: 'Sources & info',
             tiles: [
               SettingsTile(
+                title: 'API reference',
+                subtitle: 'Website of Cat API',
+                leading: Icon(Icons.language),
+                onTap: () => launchURL(kApiReferenceUrl),
+              ),
+              SettingsTile(
                 title: 'GitHub',
                 subtitle: 'Project repository',
                 leading: Icon(FontAwesomeIcons.github),
@@ -64,12 +70,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 subtitle: 'My telegram profile',
                 leading: Icon(FontAwesomeIcons.telegram),
                 onTap: () => launchURL(kTelegramUrl),
-              ),
-              SettingsTile(
-                title: 'VKontakte',
-                subtitle: 'My VK profile',
-                leading: Icon(FontAwesomeIcons.vk),
-                onTap: () => launchURL(kVKUrl),
               ),
               SettingsTile(
                 title: 'Website',

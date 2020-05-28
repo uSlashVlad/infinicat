@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:toast/toast.dart';
 import 'package:infinicat/constants.dart';
 import 'package:infinicat/widgets/iconic_button.dart';
-import 'package:infinicat/widgets/picture.dart';
-import 'package:infinicat/widgets/micro_widgets.dart';
 import 'package:infinicat/services/api.dart';
 import 'package:infinicat/services/downloading.dart';
 
@@ -128,12 +127,20 @@ class _MainScreenState extends State<MainScreen> {
         padding: const EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Flexible(
               child: Container(
                 child: ClipRRect(
-                  child: (imageSrc != '') ? Picture(imageSrc) : LoadingText(),
+                  child: Stack(
+                    children: [
+                      Container(
+                        child: SpinKitPumpingHeart(color: Colors.redAccent),
+                        width: 60,
+                        height: 60,
+                      ),
+                      Image.network(imageSrc),
+                    ],
+                  ),
                   borderRadius: BorderRadius.circular(kCardRadius),
                 ),
                 padding: EdgeInsets.all(15),
@@ -143,8 +150,8 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 15),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Row(
                   children: <Widget>[
