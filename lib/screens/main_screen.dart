@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:toast/toast.dart';
@@ -6,6 +7,7 @@ import 'package:infinicat/widgets/iconic_button.dart';
 import 'package:infinicat/services/api.dart';
 import 'package:infinicat/services/downloading.dart';
 import 'package:infinicat/services/prefs.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -16,6 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   CatAPI api = CatAPI();
   DownloadHelper downloader = DownloadHelper();
   String imageSrc = '';
+  String imgType;
 
   @override
   void initState() {
@@ -24,14 +27,35 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void updateImage() async {
-    setState(() {
-      imageSrc = '';
-    });
-    String imgType = await loadString(kPreferenceKeys['image_type']);
-    await api.loadData(imgType);
-    setState(() {
-      imageSrc = api.getImageSrc();
-    });
+    if (imageSrc != '') {
+      setState(() {
+        imageSrc = '';
+      });
+    }
+    imgType = await loadString(kPreferenceKeys['image_type']);
+    updateImageMain();
+  }
+
+  Future<void> updateImageMain() async {
+    bool result = await DataConnectionChecker().hasConnection;
+    if (result) {
+      try {
+        await api.loadData(imgType);
+        setState(() {
+          imageSrc = api.getImageSrc();
+        });
+      } catch (e) {
+        print(e);
+      }
+    } else {
+      Toast.show(
+        'No internet connection found',
+        context,
+        duration: Toast.LENGTH_SHORT,
+        gravity: Toast.BOTTOM,
+      );
+      Timer(Duration(seconds: 5,), updateImageMain);
+    }
   }
 
   void downloadImage() async {
@@ -140,7 +164,7 @@ class _MainScreenState extends State<MainScreen> {
                         width: 60,
                         height: 60,
                       ),
-                      Image.network(imageSrc),
+                      (imageSrc != '') ? Image.network(imageSrc) : SizedBox(),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(kCardRadius),
