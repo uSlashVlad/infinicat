@@ -9,20 +9,13 @@ enum VoteType { down, up }
 class CatAPI {
   var data;
 
-  Future<void> loadData() async {
-    String url = '${kApiUrl}images/search/';
+  Future<void> loadData(String imgType) async {
+    String url = '${kApiUrl}images/search/?mime_types=$imgType';
     data = (await NetworkHelper.getData(url)).data[0];
   }
 
   String getImageSrc() {
     return data['url'];
-  }
-
-  Map<String, int> getImageSize() {
-    return {
-      'width': data['width'],
-      'height': data['height'],
-    };
   }
 
   Future<int> upvote() async {

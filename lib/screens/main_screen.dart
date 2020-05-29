@@ -5,6 +5,7 @@ import 'package:infinicat/constants.dart';
 import 'package:infinicat/widgets/iconic_button.dart';
 import 'package:infinicat/services/api.dart';
 import 'package:infinicat/services/downloading.dart';
+import 'package:infinicat/services/prefs.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -26,7 +27,8 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       imageSrc = '';
     });
-    await api.loadData();
+    String imgType = await loadString(kPreferenceKeys['image_type']);
+    await api.loadData(imgType);
     setState(() {
       imageSrc = api.getImageSrc();
     });

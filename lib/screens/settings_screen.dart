@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:settings_ui/settings_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:infinicat/services/prefs.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:infinicat/constants.dart';
+import 'package:infinicat/widgets/settings_ui.dart';
+import 'package:infinicat/services/prefs.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -10,7 +12,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-
   void launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
@@ -19,65 +20,70 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
+  String typeValue;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void asyncInit() {
+    setState(() async {
+      typeValue = await loadString(kPreferenceKeys['image_type']);
+      if (typeValue == '') typeValue = 'jpg,png,gif';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
       ),
-      body: SettingsList(
-        sections: [
-          SettingsSection(
-            title: 'Main',
-            tiles: [
-              SettingsTile(
-                title: 'Theme',
-                subtitle: 'Work in progress',
-                leading: Icon(Icons.palette),
-                onTap: () {},
-              ),
-              SettingsTile(
-                title: 'Images type',
-                subtitle: 'Work in progress',
-                leading: Icon(Icons.image),
-                onTap: () {},
-              ),
-              SettingsTile(
-                title: 'API settings',
-                subtitle: 'Work in progress',
-                leading: Icon(Icons.extension),
-                onTap: () {},
-              ),
-            ],
+      body: ListView(
+        children: <Widget>[
+          SettingsTileButton(
+            onPressed: null,
+            icon: Icons.palette,
+            header: 'Themes',
+            description: 'Work in progress',
           ),
-          SettingsSection(
-            title: 'Sources & info',
-            tiles: [
-              SettingsTile(
-                title: 'API reference',
-                subtitle: 'Website of Cat API',
-                leading: Icon(Icons.language),
-                onTap: () => launchURL(kApiReferenceUrl),
-              ),
-              SettingsTile(
-                title: 'GitHub',
-                subtitle: 'Project repository',
-                leading: Icon(FontAwesomeIcons.github),
-                onTap: () => launchURL(kRepositoryUrl),
-              ),
-              SettingsTile(
-                title: 'Telegram',
-                subtitle: 'My telegram profile',
-                leading: Icon(FontAwesomeIcons.telegram),
-                onTap: () => launchURL(kTelegramUrl),
-              ),
-              SettingsTile(
-                title: 'Website',
-                subtitle: 'Debils Technologies website',
-                leading: Icon(Icons.language),
-                onTap: () => launchURL(kWebsiteUrl),
-              ),
-            ],
+          SettingsTileDropdown(
+            onChanged: (newValue) {
+              setState(() {
+                typeValue = newValue;
+                saveString(kPreferenceKeys['image_type'], newValue);
+              });
+            },
+            value: typeValue,
+            items: {
+              'jpg,png,gif': 'Photos and GIFs',
+              'jpg,png': 'Photos',
+              'gif': 'GIFs',
+            },
+            icon: Icons.image,
+            header: 'Images type',
+          ),
+          SectionTitle('Sources & Info'),
+          SettingsTileButton(
+            onPressed: () => launchURL(kApiReferenceUrl),
+            icon: FontAwesomeIcons.cogs,
+            header: 'API website',
+          ),
+          SettingsTileButton(
+            onPressed: () => launchURL(kRepositoryUrl),
+            icon: FontAwesomeIcons.github,
+            header: 'Repository',
+          ),
+          SettingsTileButton(
+            onPressed: () => launchURL(kDiscordUrl),
+            icon: FontAwesomeIcons.discord,
+            header: 'Discord',
+          ),
+          SettingsTileButton(
+            onPressed: () => launchURL(kTelegramUrl),
+            icon: FontAwesomeIcons.telegramPlane,
+            header: 'Telegram',
           ),
         ],
       ),
