@@ -106,6 +106,43 @@ List<DropdownMenuItem> genDropdownList(Map<dynamic, String> items,
   return resultList;
 }
 
+class SettingsTileCheckbox extends StatelessWidget {
+  SettingsTileCheckbox({
+    @required this.onChanged,
+    @required this.value,
+    @required this.icon,
+    @required this.header,
+    this.description = '',
+  });
+
+  final Function(dynamic newValue) onChanged;
+  final dynamic value;
+  final IconData icon;
+  final String header;
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          _SettingsTileInner(
+            icon: icon,
+            header: header,
+            description: description,
+          ),
+          Checkbox(
+            value: value,
+            onChanged: onChanged,
+          ),
+        ],
+      ),
+      padding: EdgeInsets.fromLTRB(14, 5, 0, 0),
+    );
+  }
+}
+
 class _SettingsTileInner extends StatelessWidget {
   _SettingsTileInner({
     @required this.icon,

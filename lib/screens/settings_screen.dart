@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:infinicat/services/prefs.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:infinicat/constants.dart';
 import 'package:infinicat/widgets/settings_ui.dart';
@@ -20,22 +19,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  String typeValue;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void asyncInit() {
-    setState(() async {
-      typeValue = await loadString(kPreferenceKeys['image_type']);
-      if (typeValue == '') typeValue = 'jpg,png,gif';
-    });
-  }
+  String typePref;
 
   @override
   Widget build(BuildContext context) {
+    Function(String) callback = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
@@ -48,21 +36,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
             header: 'Themes',
             description: 'Work in progress',
           ),
-          SettingsTileDropdown(
-            onChanged: (newValue) {
-              setState(() {
-                typeValue = newValue;
-                saveString(kPreferenceKeys['image_type'], newValue);
-              });
+          SharedPreferencesBuilder<String>(
+            pref: kPreferenceKeys['image_type'],
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              if (snapshot.hasData) typePref = snapshot.data;
+              return SettingsTileDropdown(
+                onChanged: (newValue) {
+                  setState(() {
+                    saveString(kPreferenceKeys['image_type'], newValue);
+                    callback(newValue);
+                  });
+                },
+                value: (snapshot.hasData) ? snapshot.data : 'jpg,png,gif',
+                items: {
+                  'jpg,png,gif': 'Photos and GIFs',
+                  'jpg,png': 'Photos',
+                  'gif': 'GIFs',
+                },
+                icon: Icons.image,
+                header: 'Images type',
+              );
             },
-            value: typeValue,
-            items: {
-              'jpg,png,gif': 'Photos and GIFs',
-              'jpg,png': 'Photos',
-              'gif': 'GIFs',
-            },
-            icon: Icons.image,
-            header: 'Images type',
           ),
           SectionTitle('Sources & Info'),
           SettingsTileButton(

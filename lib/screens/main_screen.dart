@@ -2,12 +2,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:toast/toast.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:infinicat/constants.dart';
 import 'package:infinicat/widgets/iconic_button.dart';
 import 'package:infinicat/services/api.dart';
 import 'package:infinicat/services/downloading.dart';
 import 'package:infinicat/services/prefs.dart';
-import 'package:data_connection_checker/data_connection_checker.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -18,28 +18,36 @@ class _MainScreenState extends State<MainScreen> {
   CatAPI api = CatAPI();
   DownloadHelper downloader = DownloadHelper();
   String imageSrc = '';
-  String imgType;
+  String imgType = 'jpg,png,gif';
 
   @override
   void initState() {
     super.initState();
+    asyncInit();
+  }
+
+  void asyncInit() async {
+    await loadData();
     updateImage();
   }
 
-  void updateImage() async {
-    if (imageSrc != '') {
-      setState(() {
-        imageSrc = '';
-      });
-    }
+  Future<void> loadData() async {
     imgType = await loadString(kPreferenceKeys['image_type']);
-    updateImageMain();
   }
 
-  Future<void> updateImageMain() async {
+  void settingsCallback(String newImgType) {
+    imgType = newImgType;
+  }
+
+  Future<void> updateImage() async {
     bool result = await DataConnectionChecker().hasConnection;
     if (result) {
       try {
+        if (imageSrc != '') {
+          setState(() {
+            imageSrc = '';
+          });
+        }
         await api.loadData(imgType);
         setState(() {
           imageSrc = api.getImageSrc();
@@ -54,7 +62,11 @@ class _MainScreenState extends State<MainScreen> {
         duration: Toast.LENGTH_SHORT,
         gravity: Toast.BOTTOM,
       );
-      Timer(Duration(seconds: 5,), updateImageMain);
+      Timer(
+          Duration(
+            seconds: 5,
+          ),
+          updateImage);
     }
   }
 
@@ -142,7 +154,11 @@ class _MainScreenState extends State<MainScreen> {
             IconButton(
               icon: Icon(Icons.settings),
               onPressed: () {
-                Navigator.pushNamed(context, '/settings');
+                Navigator.pushNamed(
+                  context,
+                  '/settings',
+                  arguments: settingsCallback,
+                );
               },
             )
           ],
