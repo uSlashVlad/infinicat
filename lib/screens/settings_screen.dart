@@ -31,14 +31,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         children: <Widget>[
           SettingsTileButton(
-            onPressed: null,
+            onPressed: () {
+              Navigator.pushNamed(context, '/settings/themes');
+            },
             icon: Icons.palette,
             header: 'Themes',
-            description: 'Work in progress',
+            description: 'Choose theme for you',
           ),
           SharedPreferencesBuilder<String>(
             pref: kPreferenceKeys['image_type'],
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            builder: (context, snapshot) {
               if (snapshot.hasData) typePref = snapshot.data;
               return SettingsTileDropdown(
                 onChanged: (newValue) {

@@ -176,7 +176,7 @@ class _MainScreenState extends State<MainScreen> {
                   child: Stack(
                     children: [
                       Container(
-                        child: SpinKitPumpingHeart(color: Colors.redAccent),
+                        child: SpinKitChasingDots(color: theme.accentColor),
                         width: 60,
                         height: 60,
                       ),

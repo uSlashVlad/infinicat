@@ -32,8 +32,7 @@ class SettingsTileButton extends StatelessWidget {
 
   final Function onPressed;
   final IconData icon;
-  final String header;
-  final String description;
+  final String header, description;
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +61,7 @@ class SettingsTileDropdown extends StatelessWidget {
   final dynamic value;
   final Map<dynamic, String> items;
   final IconData icon;
-  final String header;
-  final String description;
+  final String header, description;
 
   @override
   Widget build(BuildContext context) {
@@ -118,8 +116,7 @@ class SettingsTileCheckbox extends StatelessWidget {
   final Function(dynamic newValue) onChanged;
   final dynamic value;
   final IconData icon;
-  final String header;
-  final String description;
+  final String header, description;
 
   @override
   Widget build(BuildContext context) {
@@ -151,8 +148,7 @@ class _SettingsTileInner extends StatelessWidget {
   });
 
   final IconData icon;
-  final String header;
-  final String description;
+  final String header, description;
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +179,9 @@ class _SettingsTileInner extends StatelessWidget {
               Text(
                 description,
                 style: TextStyle(
-                    fontSize: 18, color: theme.textTheme.headline1.color),
+                  fontSize: 18,
+                  color: theme.textTheme.headline1.color,
+                ),
               ),
             ],
           ),

@@ -1,23 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:infinicat/screens/main_screen.dart';
 import 'package:infinicat/screens/settings_screen.dart';
+import 'package:infinicat/screens/themes_screen.dart';
+import 'package:infinicat/services/prefs.dart';
+import 'package:infinicat/theme_config.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'InfiniCat',
-      theme: ThemeData.light().copyWith(
-        cardColor: Colors.grey[300],
-      ),
-      darkTheme: ThemeData.dark(),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => MainScreen(),
-        '/settings': (context) => SettingsScreen(),
-      },
-    );
+    return SharedPreferencesBuilder<String>(
+        pref: 'theme',
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            ThemeData initTheme;
+            if (!snapshot.hasData) {
+              final isPlatformDark =
+                  WidgetsBinding.instance.window.platformBrightness ==
+                      Brightness.dark;
+              initTheme = themes[isPlatformDark ? 'dark' : 'light'];
+            } else {
+              initTheme = themes[snapshot.data];
+            }
+            return ThemeProvider(
+              initTheme: initTheme,
+              child: Builder(builder: (context) {
+                return MaterialApp(
+                  title: 'InfiniCat',
+                  theme: ThemeProvider.of(context),
+                  initialRoute: '/',
+                  routes: {
+                    '/': (context) => MainScreen(),
+                    '/settings': (context) => SettingsScreen(),
+                    '/settings/themes': (context) => ThemesScreen(),
+                  },
+                );
+              }),
+            );
+          } else {
+            return Container(color: Colors.white);
+          }
+        });
   }
 }

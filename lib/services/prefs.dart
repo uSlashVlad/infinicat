@@ -14,15 +14,20 @@ Future<bool> saveString(String key, String value) async {
   return res;
 }
 
-class SharedPreferencesBuilder<T> extends StatelessWidget {
-  final String pref;
-  final AsyncWidgetBuilder<T> builder;
+Future<bool> delKey(String key) async {
+  final res = await (await SharedPreferences.getInstance()).remove(key);
+  print('"$key" was deleted with result $res');
+  return res;
+}
 
-  const SharedPreferencesBuilder({
-    Key key,
+class SharedPreferencesBuilder<T> extends StatelessWidget {
+  SharedPreferencesBuilder({
     @required this.pref,
     @required this.builder,
-  }) : super(key: key);
+  });
+
+  final String pref;
+  final AsyncWidgetBuilder<T> builder;
 
   @override
   Widget build(BuildContext context) {
