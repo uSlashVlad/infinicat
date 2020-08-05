@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:toast/toast.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:provider/provider.dart';
 import 'package:infinicat/constants.dart';
 import 'package:infinicat/widgets/iconic_button.dart';
 import 'package:infinicat/services/api.dart';
 import 'package:infinicat/services/downloading.dart';
 import 'package:infinicat/services/prefs.dart';
+import 'package:infinicat/theme_config.dart';
+import 'package:infinicat/provider_model.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -137,7 +140,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -192,49 +195,54 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Row(
+            Consumer(
+              builder: (context, ProviderModel value, child) {
+                final btnColor = buttonsColors[value.themeCode];
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Expanded(
-                      child: IconicButton(
-                        text: 'LOVE IT',
-                        icon: Icons.thumb_up,
-                        textColor: Colors.white,
-                        color: Color(0xff4caf50),
-                        callback: upvote,
-                      ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: IconicButton(
+                            text: 'LOVE IT',
+                            icon: Icons.thumb_up,
+                            textColor: btnColor[0],
+                            color: btnColor[1],
+                            callback: upvote,
+                          ),
+                        ),
+                        SizedBox(width: 20),
+                        Expanded(
+                          child: IconicButton(
+                            text: 'NOPE IT',
+                            icon: Icons.thumb_down,
+                            textColor: btnColor[0],
+                            color: btnColor[2],
+                            callback: downvote,
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(width: 20),
-                    Expanded(
-                      child: IconicButton(
-                        text: 'NOPE IT',
-                        icon: Icons.thumb_down,
-                        textColor: Colors.white,
-                        color: Color(0xfff44336),
-                        callback: downvote,
-                      ),
+                    SizedBox(height: 5),
+                    IconicButton(
+                      text: 'NEXT CAT',
+                      icon: Icons.repeat,
+                      textColor: btnColor[0],
+                      color: btnColor[3],
+                      callback: updateImage,
+                    ),
+                    SizedBox(height: 5),
+                    IconicButton(
+                      text: 'DOWNLOAD',
+                      icon: Icons.file_download,
+                      textColor: btnColor[0],
+                      color: btnColor[4],
+                      callback: downloadImage,
                     ),
                   ],
-                ),
-                SizedBox(height: 5),
-                IconicButton(
-                  text: 'NEXT CAT',
-                  icon: Icons.repeat,
-                  color: Color(0xff2196f3),
-                  textColor: Colors.white,
-                  callback: updateImage,
-                ),
-                SizedBox(height: 5),
-                IconicButton(
-                  text: 'DOWNLOAD',
-                  icon: Icons.file_download,
-                  color: Colors.yellow[800],
-                  textColor: Colors.white,
-                  callback: downloadImage,
-                ),
-              ],
+                );
+              },
             ),
           ],
         ),

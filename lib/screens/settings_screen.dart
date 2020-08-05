@@ -26,7 +26,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     Function(String) callback = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: Text(
+          'Settings',
+          style: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: ListView(
         children: <Widget>[
