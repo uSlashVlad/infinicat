@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Simple class with the only one property that controll buttons theme.
 class ProviderModel extends ChangeNotifier {
   ProviderModel(String initTheme) {
     _themeCode = initTheme;

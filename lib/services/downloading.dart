@@ -10,10 +10,10 @@ enum DownloadStatus {
 }
 
 class DownloadHelper {
-  final dio = Dio();
-
   Future<DownloadStatus> download(String url) async {
     try {
+      // Checks for write permissions
+      // If everything is allright, tries to download file
       if (await _checkPermission()) {
         final res = await ImageSave.saveImage(
           await _getData(url),
@@ -25,6 +25,7 @@ class DownloadHelper {
         return DownloadStatus.noPerm;
       }
     } catch (e) {
+      // If everything isn't allright, returns an error
       print(e);
       return DownloadStatus.error;
     }

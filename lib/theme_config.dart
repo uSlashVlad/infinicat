@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// Base material themes for "Material app"
+// All of them are private
 final _lightTheme = ThemeData.light().copyWith(
   cardColor: Colors.grey[300],
 );
@@ -34,6 +36,9 @@ final _oneDarkTheme = _darkTheme.copyWith(
   ),
 );
 
+/// Contains themes
+///
+/// `light/dark/pink/monokai/onedark`
 final Map<String, ThemeData> themes = {
   'light': _lightTheme,
   'dark': _darkTheme,
@@ -42,6 +47,12 @@ final Map<String, ThemeData> themes = {
   'onedark': _oneDarkTheme,
 };
 
+// Base buttons colors
+// 0 - Text color
+// 1 - "Like" button color
+// 2 - "Dislike" button color
+// 3 - "New image" button color
+// 4 - "Download" button color
 final List<Color> _defButtonsColors = [
   Colors.white,
   Color(0xff4caf50),
@@ -74,6 +85,12 @@ final List<Color> _onedarkButtonsColors = [
   Color(0xffe5c07b),
 ];
 
+/// Buttons colors
+/// - [0] - Text color
+/// - [1] - "Like" button color
+/// - [2] - "Dislike" button color
+/// - [3] - "New image" button color
+/// - [4] - "Download" button color
 final Map<String, List<Color>> buttonsColors = {
   'light': _defButtonsColors,
   'dark': _defButtonsColors,

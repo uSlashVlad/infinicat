@@ -12,6 +12,9 @@ import 'package:infinicat/services/prefs.dart';
 import 'package:infinicat/theme_config.dart';
 import 'package:infinicat/provider_model.dart';
 
+/// Main screen widget
+///
+/// `/` route
 class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -59,12 +62,7 @@ class _MainScreenState extends State<MainScreen> {
         print(e);
       }
     } else {
-      Toast.show(
-        'No internet connection found',
-        context,
-        duration: Toast.LENGTH_SHORT,
-        gravity: Toast.BOTTOM,
-      );
+      _toast('No internet connection found');
       Timer(
           Duration(
             seconds: 5,
@@ -74,12 +72,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void downloadImage() async {
-    Toast.show(
-      'Download has been started',
-      context,
-      duration: Toast.LENGTH_SHORT,
-      gravity: Toast.BOTTOM,
-    );
+    _toast('Download has been started');
 
     DownloadStatus result = await downloader.download(imageSrc);
 
@@ -94,49 +87,28 @@ class _MainScreenState extends State<MainScreen> {
       default:
         resultStr = 'Error while downloading occurred';
     }
-    Toast.show(
-      resultStr,
-      context,
-      duration: Toast.LENGTH_SHORT,
-      gravity: Toast.BOTTOM,
-    );
+    _toast(resultStr);
   }
 
   void upvote() async {
     int response = await api.upvote();
     if (response == 200) {
-      Toast.show(
-        'Successfull upvote',
-        context,
-        gravity: Toast.BOTTOM,
-      );
+      _toast('Successfull upvote');
     } else {
-      Toast.show(
-        'Unsuccessfull upvote: $response',
-        context,
-        gravity: Toast.BOTTOM,
-      );
+      _toast('Unsuccessfull upvote: $response');
     }
   }
 
   void downvote() async {
     int response = await api.downvote();
     if (response == 200) {
-      Toast.show(
-        'Successfull downvote',
-        context,
-        duration: Toast.LENGTH_LONG,
-        gravity: Toast.BOTTOM,
-      );
+      _toast('Successfull downvote');
     } else {
-      Toast.show(
-        'Unsuccessfull downvote: $response',
-        context,
-        duration: Toast.LENGTH_LONG,
-        gravity: Toast.BOTTOM,
-      );
+      _toast('Unsuccessfull downvote: $response');
     }
   }
+
+  void _toast(String text) => Toast.show(text, context);
 
   @override
   Widget build(BuildContext context) {
@@ -173,6 +145,7 @@ class _MainScreenState extends State<MainScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
+            // Block of image and widgets for it
             Flexible(
               child: Container(
                 child: ClipRRect(
@@ -195,6 +168,11 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
             ),
+
+            SizedBox(height: 10),
+
+            // Block of buttons
+            // Uses provider fow themes implementation
             Consumer(
               builder: (context, ProviderModel value, child) {
                 final btnColor = buttonsColors[value.themeCode];

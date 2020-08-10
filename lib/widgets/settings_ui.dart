@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Simple text object for settings
 class SectionTitle extends StatelessWidget {
   SectionTitle(this.text);
 
@@ -13,7 +14,7 @@ class SectionTitle extends StatelessWidget {
         text,
         style: TextStyle(
           color: theme.accentColor,
-          fontSize: 20,
+          fontSize: 16.5,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -22,22 +23,23 @@ class SectionTitle extends StatelessWidget {
   }
 }
 
+/// Usual button for settings that call `onTap` function when you press on it
 class SettingsTileButton extends StatelessWidget {
   SettingsTileButton({
-    @required this.onPressed,
+    @required this.onTap,
     @required this.icon,
     @required this.header,
     this.description = '',
   });
 
-  final Function onPressed;
+  final Function onTap;
   final IconData icon;
   final String header, description;
 
   @override
   Widget build(BuildContext context) {
     return FlatButton(
-      onPressed: onPressed,
+      onPressed: onTap,
       child: _SettingsTileInner(
         icon: icon,
         header: header,
@@ -47,6 +49,8 @@ class SettingsTileButton extends StatelessWidget {
   }
 }
 
+/// Widget like `SettingsTileButton`, but with dropdown inside
+/// instead of `FlatButton`
 class SettingsTileDropdown extends StatelessWidget {
   SettingsTileDropdown({
     @required this.onChanged,
@@ -76,7 +80,7 @@ class SettingsTileDropdown extends StatelessWidget {
           ),
           DropdownButton(
             value: value,
-            items: genDropdownList(items, value),
+            items: _genDropdownList(items, value),
             onChanged: onChanged,
           ),
         ],
@@ -86,14 +90,18 @@ class SettingsTileDropdown extends StatelessWidget {
   }
 }
 
-List<DropdownMenuItem> genDropdownList(Map<dynamic, String> items,
+// Quite stupid function. I think exists more efficient way of doing this
+List<DropdownMenuItem> _genDropdownList(Map<dynamic, String> items,
     [dynamic startVal]) {
+  // List of dropdown items that will be returned into `items` property
   List<DropdownMenuItem> resultList = [];
   items.forEach((key, value) {
+    // Here function "generates" simple list of dropdown items using `items` map
     resultList.add(DropdownMenuItem(
       value: key,
       child: Row(
         children: <Widget>[
+          // If selected item is equal to this item in cycle, it will be checked
           (key == startVal) ? Icon(Icons.check, size: 15) : SizedBox(width: 15),
           SizedBox(width: 4),
           Text(value, style: TextStyle(fontSize: 18)),
@@ -104,6 +112,7 @@ List<DropdownMenuItem> genDropdownList(Map<dynamic, String> items,
   return resultList;
 }
 
+/// Widget like `SettingsTileButton`, but with checkbox inside
 class SettingsTileCheckbox extends StatelessWidget {
   SettingsTileCheckbox({
     @required this.onChanged,
@@ -113,7 +122,7 @@ class SettingsTileCheckbox extends StatelessWidget {
     this.description = '',
   });
 
-  final Function(dynamic newValue) onChanged;
+  final Function(bool newValue) onChanged;
   final dynamic value;
   final IconData icon;
   final String header, description;
@@ -140,6 +149,7 @@ class SettingsTileCheckbox extends StatelessWidget {
   }
 }
 
+/// Filling of all this Settings Tile widgets
 class _SettingsTileInner extends StatelessWidget {
   _SettingsTileInner({
     @required this.icon,
@@ -155,7 +165,7 @@ class _SettingsTileInner extends StatelessWidget {
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: 10,
+        horizontal: 8,
         vertical: 13,
       ),
       child: Row(
@@ -163,7 +173,7 @@ class _SettingsTileInner extends StatelessWidget {
         children: <Widget>[
           Icon(
             icon,
-            size: 30,
+            size: 26,
             color: theme.accentColor,
           ),
           SizedBox(width: 15),
@@ -173,7 +183,7 @@ class _SettingsTileInner extends StatelessWidget {
               Text(
                 header,
                 style: TextStyle(
-                  fontSize: 22.5,
+                  fontSize: 19.0,
                 ),
               ),
               Text(

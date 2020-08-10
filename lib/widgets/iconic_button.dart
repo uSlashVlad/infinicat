@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+/// Simple rounded `FlatButton` with icon and text
 class IconicButton extends StatelessWidget {
   IconicButton({
+    @required this.icon,
     @required this.text,
-    this.icon,
     this.color,
     @required this.callback,
     this.textColor,
@@ -11,8 +12,7 @@ class IconicButton extends StatelessWidget {
 
   final String text;
   final IconData icon;
-  final Color color;
-  final Color textColor;
+  final Color color, textColor;
   final Function callback;
 
   @override

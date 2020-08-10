@@ -5,6 +5,8 @@ import 'package:infinicat/theme_config.dart';
 import 'package:infinicat/services/prefs.dart';
 import 'package:infinicat/services/theme_switcher.dart';
 
+/// Widget of button, that changes theme of app.
+/// (For settings)
 class ThemeButton extends StatelessWidget {
   ThemeButton({
     @required this.themeCode,
@@ -28,7 +30,7 @@ class ThemeButton extends StatelessWidget {
     return ThemeSwitcher(
       builder: (context) {
         return SettingsTileButton(
-          onPressed: () => changeTheme(context),
+          onTap: () => changeTheme(context),
           icon: icon,
           header: title,
           description: description,

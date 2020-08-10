@@ -5,6 +5,9 @@ import 'package:infinicat/constants.dart';
 import 'package:infinicat/widgets/settings_ui.dart';
 import 'package:infinicat/services/prefs.dart';
 
+/// Settings screen widget
+///
+/// `/settings` route
 class SettingsScreen extends StatefulWidget {
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
@@ -37,7 +40,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         children: <Widget>[
           SettingsTileButton(
-            onPressed: () {
+            onTap: () {
               Navigator.pushNamed(context, '/settings/themes');
             },
             icon: Icons.palette,
@@ -68,25 +71,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           SectionTitle('Sources & Info'),
           SettingsTileButton(
-            onPressed: () => launchURL(kApiReferenceUrl),
+            onTap: () => launchURL(kApiReferenceUrl),
             icon: FontAwesomeIcons.cogs,
             header: 'API website',
           ),
           SettingsTileButton(
-            onPressed: () => launchURL(kRepositoryUrl),
+            onTap: () => launchURL(kRepositoryUrl),
             icon: FontAwesomeIcons.github,
             header: 'Repository',
           ),
           SettingsTileButton(
-            onPressed: () => launchURL(kDiscordUrl),
+            onTap: () => launchURL(kDiscordUrl),
             icon: FontAwesomeIcons.discord,
             header: 'Discord',
           ),
           SettingsTileButton(
-            onPressed: () => launchURL(kTelegramUrl),
+            onTap: () => launchURL(kTelegramUrl),
             icon: FontAwesomeIcons.telegramPlane,
             header: 'Telegram',
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Infinicat. v1.4.1 (10)',
+              style: TextStyle(fontSize: 20),
+            ),
+          )
         ],
       ),
     );

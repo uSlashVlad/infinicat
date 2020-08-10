@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Simple data loading from shared prefs
 Future<String> loadString(String key) async {
   final res = (await SharedPreferences.getInstance()).getString(key);
   print('String "$key" loaded: $res');
   return res;
 }
 
+/// Simple data storing into shared prefs
 Future<bool> saveString(String key, String value) async {
   final res =
       await (await SharedPreferences.getInstance()).setString(key, value);
@@ -14,6 +16,7 @@ Future<bool> saveString(String key, String value) async {
   return res;
 }
 
+/// Simple data removing from shared prefs
 Future<bool> delKey(String key) async {
   final res = await (await SharedPreferences.getInstance()).remove(key);
   print('"$key" was deleted with result $res');
@@ -26,6 +29,7 @@ class SharedPreferencesBuilder<T> extends StatelessWidget {
     @required this.builder,
   });
 
+  /// Just the pref key
   final String pref;
   final AsyncWidgetBuilder<T> builder;
 
@@ -40,7 +44,7 @@ class SharedPreferencesBuilder<T> extends StatelessWidget {
 
   Future<T> _future() async {
     dynamic res = await (await SharedPreferences.getInstance()).get(pref);
-    print('Dynamic loaded: $res by AsyncBuilder');
+    print('Pref loaded: $res by AsyncBuilder');
     return res;
   }
 }

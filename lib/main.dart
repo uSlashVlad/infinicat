@@ -10,29 +10,35 @@ import 'package:infinicat/provider_model.dart';
 
 void main() => runApp(MyApp());
 
+/// Main Flutter app widget
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SharedPreferencesBuilder<String>(
+      // Theme preferences loading from shared prefs
       pref: 'theme',
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           ThemeData initTheme;
           String themeCode;
           if (!snapshot.hasData) {
+            // If there is no theme selected, app will use system settings
             final isPlatformDark =
                 WidgetsBinding.instance.window.platformBrightness ==
                     Brightness.dark;
             themeCode = isPlatformDark ? 'dark' : 'light';
           } else {
+            // Else app will use stored value
             themeCode = snapshot.data;
           }
           initTheme = themes[themeCode];
 
           return ThemeProvider(
+            // For theme changing
             initTheme: initTheme,
             child: Builder(builder: (context) {
               return ChangeNotifierProvider(
+                // For provider (now provider is used for buttons theme)
                 create: (context) => ProviderModel(themeCode),
                 child: MaterialApp(
                   title: 'InfiniCat',

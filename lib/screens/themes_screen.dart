@@ -6,6 +6,9 @@ import 'package:infinicat/widgets/theme_button.dart';
 import 'package:infinicat/widgets/settings_ui.dart';
 import 'package:infinicat/services/theme_switcher.dart';
 
+/// Themes screen widget.
+/// 
+/// `/settings/themes` route
 class ThemesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,7 @@ class ThemesScreen extends StatelessWidget {
           ThemeSwitcher(
             builder: (context) {
               return SettingsTileButton(
-                onPressed: () {
+                onTap: () {
                   final isPlatformDark =
                       WidgetsBinding.instance.window.platformBrightness ==
                           Brightness.dark;
